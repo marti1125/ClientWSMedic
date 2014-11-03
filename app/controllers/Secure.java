@@ -85,6 +85,7 @@ public class Secure extends Controller {
 	
 	public static void logout(){
 		session.clear();
+		flash.success("exito");
 		redirect("/secure/login");
 	}
 	

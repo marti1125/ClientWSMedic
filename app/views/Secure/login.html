@@ -25,11 +25,17 @@
 		                <strong>¡Error! </strong>Usuario y/o Passoword incorrecto
 		            </div>
 				#{/if}
+				#{if flash.success}
+				<div class="alert alert-success">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>¡Exito! </strong> Termino su sesión
+				</div>
+				#{/if}
 				  <div class="form-group">
 				    <h1>Sistema</h1>
 				    <input type="text" name="codigo" id="codigo" class="form-control" placeholder="Código">
 				    <br/>
-				    <input type="text" name="password" id="password" class="form-control" placeholder="Password">
+				    <input type="password" name="password" id="password" class="form-control" placeholder="Password">
 				  </div>
 				  <button type="submit" class="btn btn-primary col-md-12">Ingresar</button>
 				#{/form}

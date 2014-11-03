@@ -1,4 +1,4 @@
-ClientWSMedic
+Play Framework 1.3 WS Client
 =============
 
-Cliente WS
+    $ play run

@@ -10,7 +10,11 @@ import models.*;
 public class Application extends Controller {
 
     public static void index() {
-        render();
+    	if(session.get("codigo") == null){
+    		redirect("/secure/login");
+    	} else {
+    		render();
+    	}
     }
 
 }

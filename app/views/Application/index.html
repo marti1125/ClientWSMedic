@@ -7,11 +7,48 @@
 	<div class="col-md-6">
 		<form role="form">
 		  <div class="form-group">
-		    <input type="text" class="form-control" placeholder="Buscar Paciente">
+		    <input type="text" class="form-control" placeholder="Buscar Paciente" id="txtDni">
 		  </div>
-		  <button type="submit" class="btn btn-primary">Buscar</button>
+		  <button	 class="btn btn-primary" id="buscarPaciente">Buscar</button>
 		</form>
 	</div>
 	<div class="col-md-3">
 	</div>
 </div>
+<br/>
+<div class="row">
+	<div class="col-md-3">
+	</div>
+	<div class="col-md-6">
+		<table id="resultado" class="table">
+			<tr>
+				<th>Nombre</th>
+				<th>Diagnostico</th>
+				<th>Fecha</th>
+				<th>Doctor</th>
+				<th>DNI</th>
+			</tr>
+		</table>
+	</div>
+	<div class="col-md-3">
+	</div>
+</div>
+<script>
+
+$("#buscarPaciente").click(function(){
+	
+	var dni = $('#txtDni').val();
+
+	$.get("http://localhost/simple-api-php/index.php/consulta/"+dni+"?callback=?",function(data){
+		$.each(data,function(k,v){
+			$("#resultado").html(
+		 	"<tr><td>"+v.nombre_completo+"</td><td>"+v.diagnostico+"</td>"
+			+ "<td>"+v.fecha+"</td><td>"+v.doctor+"</td><td>"+v.dni+"</td></tr>");
+			console.log(v.nombre_completo);			
+		})
+	});
+	
+	return false;
+});
+
+</script>

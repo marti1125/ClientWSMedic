@@ -20,7 +20,7 @@
 	<div class="col-md-3">
 	</div>
 	<div class="col-md-6">
-		<table id="resultado" class="table">
+		<table class="table">
 			<tr>
 				<th>Nombre</th>
 				<th>Diagnostico</th>
@@ -28,6 +28,8 @@
 				<th>Doctor</th>
 				<th>DNI</th>
 			</tr>
+			<tbody id="resultado">
+			</tbody>
 		</table>
 	</div>
 	<div class="col-md-3">
@@ -38,17 +40,22 @@
 $("#buscarPaciente").click(function(){
 	
 	var dni = $('#txtDni').val();
-
+	
+	$("#resultado").html('');
+	
 	$.get("http://localhost/simple-api-php/index.php/consulta/"+dni+"?callback=?",function(data){
+		
 		$.each(data,function(k,v){
-			$("#resultado").html(
+			$("#resultado").append(
 		 	"<tr><td>"+v.nombre_completo+"</td><td>"+v.diagnostico+"</td>"
 			+ "<td>"+v.fecha+"</td><td>"+v.doctor+"</td><td>"+v.dni+"</td></tr>");
-			console.log(v.nombre_completo);			
-		})
+			console.log(v.nombre_completo);
+		});
+		
 	});
 	
 	return false;
+	
 });
 
 </script>

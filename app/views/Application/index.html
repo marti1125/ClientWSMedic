@@ -7,9 +7,9 @@
 	<div class="col-md-6">
 		<form role="form">
 		  <div class="form-group">
-		    <input type="text" class="form-control" placeholder="Buscar Paciente" id="txtDni">
+		    <input type="text" class="form-control" placeholder="Buscar Paciente por DNI" id="txtDni">
 		  </div>
-		  <button	 class="btn btn-primary" id="buscarPaciente">Buscar</button>
+		  <button class="btn btn-primary" id="buscarPaciente">Buscar</button>
 		</form>
 	</div>
 	<div class="col-md-3">
@@ -20,22 +20,50 @@
 	<div class="col-md-3">
 	</div>
 	<div class="col-md-6">
-		<table class="table">
-			<tr>
-				<th>Nombre</th>
-				<th>Diagnostico</th>
-				<th>Fecha</th>
-				<th>Doctor</th>
-				<th>DNI</th>
-			</tr>
-			<tbody id="resultado">
-			</tbody>
-		</table>
+		<div id="resultadoClinicas">
+			<h3>El paciente tiene historial el las siguientes clinicas</h3>
+			<button type="button" class="btn btn-primary btn-lg btnCI" data-toggle="modal" data-target="#myModal">
+				<img src="@{'/public/images/clinica_internacional.jpg'}" />
+			</button>
+		</div>
+		<!-- Modal Clinica Internacional -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		        <h4 class="modal-title" id="myModalLabel">Clinica Internacional</h4>
+		      </div>
+		      <div class="modal-body">
+		      	<table class="table">
+					<tr>
+						<th>Nombre</th>
+						<th>Diagnostico</th>
+						<th>Fecha</th>
+						<th>Doctor</th>
+						<th>DNI</th>
+					</tr>
+					<tbody id="resultado">
+					</tbody>
+				</table>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	</div>
 	<div class="col-md-3">
 	</div>
 </div>
+
 <script>
+
+$(document).ready(function(){
+	$('#resultadoClinicas').hide();
+	$('.btnCI').hide();
+});
 
 $("#buscarPaciente").click(function(){
 	
@@ -44,14 +72,19 @@ $("#buscarPaciente").click(function(){
 	$("#resultado").html('');
 	
 	$.get("http://localhost/simple-api-php/index.php/consulta/"+dni+"?callback=?",function(data){
-		
-		$.each(data,function(k,v){
-			$("#resultado").append(
-		 	"<tr><td>"+v.nombre_completo+"</td><td>"+v.diagnostico+"</td>"
-			+ "<td>"+v.fecha+"</td><td>"+v.doctor+"</td><td>"+v.dni+"</td></tr>");
-			console.log(v.nombre_completo);
-		});
-		
+		if(data.length != 0){
+			$.each(data,function(k,v){
+				$("#resultado").append(
+			 	"<tr><td>"+v.nombre_completo+"</td><td>"+v.diagnostico+"</td>"
+				+ "<td>"+v.fecha+"</td><td>"+v.doctor+"</td><td>"+v.dni+"</td></tr>");
+				console.log(v.nombre_completo);
+				$('#resultadoClinicas').show();
+				$('.btnCI').show();
+			});
+		} else {
+			$('#resultadoClinicas').hide();
+			$('.btnCI').hide();
+		}
 	});
 	
 	return false;

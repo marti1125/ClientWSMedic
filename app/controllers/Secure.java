@@ -30,7 +30,9 @@ public class Secure extends Controller {
 	
 	public static void validation(String codigo, String password){
 		
-		HttpResponse res = WS.url("http://localhost:8080/RESTfulWS/rest/UserInfoService/login")
+		String wsServer = Play.configuration.getProperty("Server-WS");
+		
+		HttpResponse res = WS.url(wsServer)
 				.setParameter("codigo", codigo)
 				.setParameter("password", password).get();
 		

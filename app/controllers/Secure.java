@@ -7,6 +7,7 @@ import play.mvc.*;
 
 import java.io.InputStream;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.security.KeyRep.Type;
 import java.util.*;
 
@@ -14,6 +15,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -28,15 +30,16 @@ public class Secure extends Controller {
 		render();
 	}
 	
-	public static void validation(String codigo, String password){
+	public static void validation(String codigo, String password) throws UnsupportedEncodingException{
 		
 		String wsServer = Play.configuration.getProperty("Server-WS");
 		
-		HttpResponse res = WS.url(wsServer)
+		HttpResponse res = WS.url(wsServer + "rest/UserInfoService/login")
 				.setParameter("codigo", codigo)
-				.setParameter("password", password).get();
+				.setParameter("password", MySQLPassword(password)).get();
 		
 		String content = res.getString();
+		System.out.println("contenido"  + content);
 		String codigoWS = "";
 		String nombreCompletoWS = "";
 		
@@ -73,12 +76,12 @@ public class Secure extends Controller {
 		}
 		
 		if(!codigoWS.equals("noexiste")){
-			System.out.println(codigoWS);
+			System.out.println("error   "+codigoWS);
 			session.put("codigo", codigoWS);
 			session.put("nombreCompleto", nombreCompletoWS);
 			redirect("/");
 		} else {
-			System.out.println(codigoWS);
+			System.out.println("error   "+codigoWS);
 			flash.error("error");
 			login();
 		}
@@ -104,5 +107,10 @@ public class Secure extends Controller {
         }
         return null;
     }
+	
+	public static String MySQLPassword(String plainText) throws UnsupportedEncodingException {
+	    byte[] utf8 = plainText.getBytes("UTF-8");
+	    return "*" + DigestUtils.sha1Hex(DigestUtils.sha1(utf8)).toUpperCase();
+	}
 	
 }

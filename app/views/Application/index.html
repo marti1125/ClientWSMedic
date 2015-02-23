@@ -7,7 +7,7 @@
 	<div class="col-md-6">
 		<form role="form">
 		  <div class="form-group">
-		    <input type="text" class="form-control" placeholder="Buscar Paciente por DNI" id="txtDni">
+		    <input type="text" class="form-control" placeholder="Buscar por DNI" id="txtDni">
 		  </div>
 		  <button class="btn btn-primary" id="buscarPaciente">Buscar</button>
 		</form>
@@ -71,7 +71,7 @@ $("#buscarPaciente").click(function(){
 	
 	$("#resultado").html('');
 	
-	$.get("http://localhost/simple-api-php/index.php/consulta/"+dni+"?callback=?",function(data){
+	$.get("http://env-0380081.whelastic.net/historialrest/index.php/consulta/"+dni+"?callback=?",function(data){
 		if(data.length != 0){
 			$.each(data,function(k,v){
 				$("#resultado").append(
